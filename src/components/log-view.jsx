@@ -26,9 +26,9 @@ const LogView = ({
       {selectedEmployee && (
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
-            <DialogTitle>{selectedEmployee.name}'s Logbook</DialogTitle>
+            <DialogTitle>{selectedEmployee.name}&apos;s Logbook</DialogTitle>
             <DialogDescription>
-              Recent entries from {selectedEmployee.name}'s logbook
+              Recent entries from {selectedEmployee.name}&apos;s logbook
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-[400px] w-full rounded-md border p-4">

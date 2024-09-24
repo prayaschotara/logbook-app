@@ -20,14 +20,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* <div className="flex h-screen bg-gray-100">
-          <Sidebar />
-          <Toaster />
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
-        </div> */}
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>
     </html>

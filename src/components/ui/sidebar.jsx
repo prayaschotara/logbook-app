@@ -1,7 +1,7 @@
 "use client";
 import axios from "@/config/axios";
 import { supabase } from "@/config/supabase";
-import { LayoutDashboard, UsersIcon } from "lucide-react";
+import { LayoutDashboard, LayoutDashboardIcon, UsersIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   DropdownMenu,
@@ -19,21 +19,39 @@ const Sidebar = ({ isSuperAdmin }) => {
   const pathname = usePathname();
   const showNavbar = !["/signup", "/login"].includes(pathname);
   const superAdminNav = isSuperAdmin ? (
-    <a
-      href="/superadmin/employee"
-      className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-    >
-      <UsersIcon className="h-5 w-5" />
-      <span>Employees</span>
-    </a>
+    <>
+      <a
+        href="/superadmin"
+        className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+      >
+        <LayoutDashboardIcon className="h-5 w-5" />
+        <span>Dashboard</span>
+      </a>
+      <a
+        href="/superadmin/employee"
+        className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+      >
+        <UsersIcon className="h-5 w-5" />
+        <span>Employees</span>
+      </a>
+    </>
   ) : (
-    <a
-      href="/admin/logbook"
-      className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-    >
-      <UsersIcon className="h-5 w-5" />
-      <span>Logbook</span>
-    </a>
+    <>
+      <a
+        href="/admin"
+        className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+      >
+        <LayoutDashboardIcon className="h-5 w-5" />
+        <span>Dashboard</span>
+      </a>
+      <a
+        href="/admin/logbook"
+        className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+      >
+        <UsersIcon className="h-5 w-5" />
+        <span>Logbook</span>
+      </a>
+    </>
   );
 
   const handleLogout = async () => {

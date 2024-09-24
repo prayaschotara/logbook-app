@@ -1,7 +1,8 @@
+import AdminDashboard from "@/containers/admin-dashboard";
 import React from "react";
 
 const AdminPage = () => {
-  return <div>AdminPage</div>;
+  return <AdminDashboard />;
 };
 
 export default AdminPage;

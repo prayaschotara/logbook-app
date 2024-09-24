@@ -1,9 +1,28 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { LineChart, Line } from "recharts";
 import { UsersIcon, BookOpenIcon, LayoutDashboard } from "lucide-react";
-import Header from "./ui/header";
+import Header from "@/components/ui/header";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
+  const data = [
+    { name: "Jan", sales: 4000, revenue: 2400 },
+    { name: "Feb", sales: 3000, revenue: 1398 },
+    { name: "Mar", sales: 2000, revenue: 9800 },
+    { name: "Apr", sales: 2780, revenue: 3908 },
+    { name: "May", sales: 1890, revenue: 4800 },
+    { name: "Jun", sales: 2390, revenue: 3800 },
+  ];
   return (
     <>
       <Header text="Dashboard" />
@@ -47,8 +66,45 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Sales Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="sales" fill="#8884d8" />
+                <Bar dataKey="revenue" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

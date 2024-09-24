@@ -1,7 +1,7 @@
+import SuperAdminDashboard from "@/containers/superadmin-dashboard";
 import React from "react";
-
 const SuperAdmin = () => {
-  return <div>SuperAdmin</div>;
+  return <SuperAdminDashboard />;
 };
 
 export default SuperAdmin;

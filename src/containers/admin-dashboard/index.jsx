@@ -13,6 +13,8 @@ import {
 import { LineChart, Line } from "recharts";
 import { UsersIcon, BookOpenIcon, LayoutDashboard } from "lucide-react";
 import Header from "@/components/ui/header";
+import RealTimeActivityWidget from "@/components/real-time-activity";
+import TaskManagementWidget from "@/components/task-management";
 
 const AdminDashboard = () => {
   const data = [
@@ -23,6 +25,25 @@ const AdminDashboard = () => {
     { name: "May", sales: 1890, revenue: 4800 },
     { name: "Jun", sales: 2390, revenue: 3800 },
   ];
+
+  const activityFeed = [
+    { id: 1, user: "Alice", action: "Completed a sale", time: "2 minutes ago" },
+    {
+      id: 2,
+      user: "Bob",
+      action: "Added a new product",
+      time: "10 minutes ago",
+    },
+    {
+      id: 3,
+      user: "Charlie",
+      action: "Resolved a customer issue",
+      time: "25 minutes ago",
+    },
+    { id: 4, user: "Diana", action: "Updated inventory", time: "1 hour ago" },
+    { id: 5, user: "Ethan", action: "Processed a refund", time: "2 hours ago" },
+  ];
+
   return (
     <>
       <Header text="Dashboard" />
@@ -65,6 +86,10 @@ const AdminDashboard = () => {
             <p className="text-xs text-muted-foreground">-2% from last month</p>
           </CardContent>
         </Card>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 my-2">
+        <RealTimeActivityWidget activities={activityFeed} />
+        <TaskManagementWidget />
       </div>
       <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card>

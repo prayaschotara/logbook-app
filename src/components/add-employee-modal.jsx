@@ -23,7 +23,7 @@ import {
 import { createEmployee } from "@/services/employeeServices"; // Import the service
 import { Loader2 } from "lucide-react";
 
-export function AddEmployeeModal() {
+export function AddEmployeeModal({ getAllEmployees }) {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [designation, setDesignation] = useState("");
@@ -48,6 +48,7 @@ export function AddEmployeeModal() {
       setEmail("");
       setPassword("");
       setIsLoading(false);
+      getAllEmployees();
     } catch (err) {
       setError("Failed to add employee. Please try again.");
       console.error("Error adding employee:", err);

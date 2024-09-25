@@ -54,6 +54,10 @@ export const deleteEmployee = async (id) => {
     .from("employees")
     .delete()
     .eq("id", id);
+  const { data: userData, error: userError } = await supabase
+    .from("users")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
   return data;
 };

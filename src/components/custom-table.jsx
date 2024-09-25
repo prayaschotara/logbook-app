@@ -27,8 +27,10 @@ import {
 import LogView from "./log-view";
 import { supabase } from "@/config/supabase";
 import { toast } from "@/hooks/use-toast";
+import { deleteEmployee } from "@/services/employeeServices";
 
 export default function CustomTable({
+  refresh = () => {},
   isLoading,
   data,
   columns,
@@ -113,11 +115,24 @@ export default function CustomTable({
                       </TableCell>
                     ))}
                     {action && (
-                      <TableCell>
-                        <Button onClick={() => getLogs(item)}>
-                          View Logbook
-                        </Button>
-                      </TableCell>
+                      <>
+                        <TableCell>
+                          <Button onClick={() => getLogs(item)}>
+                            View Logbook
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="destructive"
+                            onClick={async () => {
+                              await deleteEmployee(item.id);
+                              refresh();
+                            }}
+                          >
+                            Delete Employee
+                          </Button>
+                        </TableCell>
+                      </>
                     )}
                   </TableRow>
                 ))}

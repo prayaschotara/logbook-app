@@ -44,8 +44,9 @@ function EmployeesPage() {
         title="All Employees"
         columns={cols}
         isAddButton={true}
-        AddNewModal={<AddEmployeeModal />}
+        AddNewModal={<AddEmployeeModal getAllEmployees={getAllEmployees} />}
         action={employees.length > 0 ? true : false}
+        refresh={getAllEmployees}
       />
     </div>
   );

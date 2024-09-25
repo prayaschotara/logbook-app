@@ -22,12 +22,14 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader2,
 } from "lucide-react";
 import LogView from "./log-view";
 import { supabase } from "@/config/supabase";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomTable({
+  isLoading,
   data,
   columns,
   itemsPerPage = 5,
@@ -84,39 +86,45 @@ export default function CustomTable({
           <CardTitle>{title}</CardTitle>
           {AddNewModal}
         </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {columns?.map((column, index) => (
-                  <TableHead key={index} className={column?.className}>
-                    {column?.header}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentItems?.map((item) => (
-                <TableRow key={item.id}>
+        {isLoading ? (
+          <div className="flex justify-center items-center">
+            <Loader2 className="w-10 h-10 animate-spin" />
+          </div>
+        ) : (
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
                   {columns?.map((column, index) => (
-                    <TableCell key={index} className={column?.className}>
-                      {typeof column?.accessor === "function"
-                        ? column?.accessor(item)
-                        : item[column?.accessor]}
-                    </TableCell>
+                    <TableHead key={index} className={column?.className}>
+                      {column?.header}
+                    </TableHead>
                   ))}
-                  {action && (
-                    <TableCell>
-                      <Button onClick={() => getLogs(item)}>
-                        View Logbook
-                      </Button>
-                    </TableCell>
-                  )}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
+              </TableHeader>
+              <TableBody>
+                {currentItems?.map((item) => (
+                  <TableRow key={item.id}>
+                    {columns?.map((column, index) => (
+                      <TableCell key={index} className={column?.className}>
+                        {typeof column?.accessor === "function"
+                          ? column?.accessor(item)
+                          : item[column?.accessor]}
+                      </TableCell>
+                    ))}
+                    {action && (
+                      <TableCell>
+                        <Button onClick={() => getLogs(item)}>
+                          View Logbook
+                        </Button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        )}
         {action && (
           <LogView
             isModalOpen={isModalOpen}

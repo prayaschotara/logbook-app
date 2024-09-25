@@ -1,6 +1,5 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import {
   BarChart,
   Bar,
@@ -12,14 +11,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { LineChart, Line } from "recharts";
-import { UsersIcon, BookOpenIcon, LayoutDashboard } from "lucide-react";
+import { UsersIcon, BookOpenIcon } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/config/supabase";
 import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import Header from "@/components/ui/header";
 import RealTimeActivityWidget from "@/components/real-time-activity";
 import TaskManagementWidget from "@/components/task-management";
+import { getTotalEmployees } from "@/services/employeeServices";
+import { getLogsCount } from "@/services/logbookServices";
 
 const SuperAdminDashboard = () => {
   const [totalEmployees, setTotalEmployees] = useState(121);
@@ -51,17 +51,12 @@ const SuperAdminDashboard = () => {
     { id: 5, user: "Ethan", action: "Processed a refund", time: "2 hours ago" },
   ];
 
-  const getTotalEmplyees = async () => {
+  const getCardData = async () => {
     try {
-      const { data, error } = await supabase.from("employees").select("*");
-      const { data: logbooks, error: logbooksError } = await supabase
-        .from("logbook")
-        .select("*");
-      if (error) {
-        throw error;
-      }
-      //   setTotalEmployees(data.length);
-      //   setTotalLogs(logbooks.length);
+      const data = await getTotalEmployees();
+      const logs = await getLogsCount();
+      // setTotalEmployees(data.length);
+      // setTotalLogs(logs.length);
     } catch (error) {
       toast({
         title: "Error!",
@@ -71,7 +66,7 @@ const SuperAdminDashboard = () => {
   };
 
   useEffect(() => {
-    getTotalEmplyees();
+    getCardData();
   }, []);
   return (
     <>
@@ -118,7 +113,7 @@ const SuperAdminDashboard = () => {
         <RealTimeActivityWidget activities={activityFeed} />
         <TaskManagementWidget />
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Sales Overview</CardTitle>

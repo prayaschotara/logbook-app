@@ -57,3 +57,9 @@ export const deleteEmployee = async (id) => {
   if (error) throw error;
   return data;
 };
+
+export const getTotalEmployees = async () => {
+  const { data, error } = await supabase.from("employees").select("*");
+  if (error) throw error;
+  return data;
+};

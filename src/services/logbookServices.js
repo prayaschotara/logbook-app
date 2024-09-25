@@ -36,3 +36,9 @@ export const deleteLogbook = async (logbookId) => {
   if (error) throw error;
   return data;
 };
+
+export const getLogsCount = async () => {
+  const { data, error } = await supabase.from("logbook").select("*");
+  if (error) throw error;
+  return data;
+};

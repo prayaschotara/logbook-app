@@ -42,6 +42,7 @@ export function AddLogModal() {
       ...formData,
       user_id: user.id,
       loggedin_user: user.email,
+      person_name: user.name,
     };
     try {
       await createLogbook(logbookEntry);

@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { LineChart, Line } from "recharts";
-import { UsersIcon, BookOpenIcon, LayoutDashboard } from "lucide-react";
+import { UsersIcon, BookOpenIcon } from "lucide-react";
 import Header from "@/components/ui/header";
 import RealTimeActivityWidget from "@/components/real-time-activity";
 import TaskManagementWidget from "@/components/task-management";

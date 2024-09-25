@@ -1,35 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Check } from "lucide-react";
+import { Check, Trash } from "lucide-react";
+import useUser from "@/hooks/use-user";
+import {
+  createTask,
+  deleteTask,
+  getTaskByUserId,
+  updateTask,
+} from "@/services/taskServices";
+import { toast } from "@/hooks/use-toast";
 
-export default function TaskManagementWidget({ initialTasks }) {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Review Q3 financial report", completed: false },
-    { id: 2, text: "Prepare for team meeting", completed: true },
-    { id: 3, text: "Update product roadmap", completed: false },
-  ]);
+export default function TaskManagementWidget() {
+  const user = useUser();
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  const addTask = () => {
+  const addTask = async () => {
     if (newTask.trim() !== "") {
-      setTasks([
-        ...tasks,
-        { id: tasks.length + 1, text: newTask, completed: false },
-      ]);
-      setNewTask("");
+      await createTask({
+        user_id: user.id,
+        task: newTask,
+      });
+
+      const data = await getTaskByUserId(user.id);
+      if (data) {
+        setTasks(data);
+        setNewTask("");
+        toast({
+          title: "Task added successfully",
+          variant: "default",
+        });
+      }
+    }
+  };
+  const toggleTask = async (id, task) => {
+    await updateTask(id, { isComplete: !task.isComplete });
+    const data = await getTaskByUserId(user.id);
+    if (data) {
+      setTasks(data);
     }
   };
 
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const removeTask = async (id) => {
+    await deleteTask(id);
+    const data = await getTaskByUserId(user.id);
+    if (data) {
+      setTasks(data);
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      const fetchTasks = async () => {
+        const data = await getTaskByUserId(user.id);
+        if (data) {
+          setTasks(data);
+        }
+      };
+      fetchTasks();
+    }
+  }, [user]);
 
   return (
     <Card>
@@ -48,25 +81,46 @@ export default function TaskManagementWidget({ initialTasks }) {
           <Button onClick={addTask}>Add</Button>
         </div>
         <ScrollArea className="h-[300px] w-full">
-          {tasks.map((task) => (
-            <div key={task.id} className="flex items-center mb-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className={`mr-2 ${task.completed ? "bg-green-500" : ""}`}
-                onClick={() => toggleTask(task.id)}
+          {tasks.length > 0 ? (
+            tasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex items-center mb-2 justify-between"
               >
-                <Check
-                  className={`h-4 w-4 ${
-                    task.completed ? "text-white" : "text-muted-foreground"
-                  }`}
-                />
-              </Button>
-              <span className={task.completed ? "line-through" : ""}>
-                {task.text}
-              </span>
+                <div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className={`mr-2 ${task.isComplete ? "bg-green-500" : ""}`}
+                    onClick={() => toggleTask(task.id, task)}
+                  >
+                    <Check
+                      className={`h-4 w-4 ${
+                        task.isComplete ? "text-white" : "text-muted-foreground"
+                      }`}
+                    />
+                  </Button>
+                  <span className={task.isComplete ? "line-through" : ""}>
+                    {task.task}
+                  </span>
+                </div>
+                <div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className={`mr-2 hover:bg-red-500 text-muted-foreground hover:text-white`}
+                    onClick={() => removeTask(task.id)}
+                  >
+                    <Trash className={`h-4 w-4`} />
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center mb-2">
+              <span className="text-muted-foreground">No tasks found</span>
             </div>
-          ))}
+          )}
         </ScrollArea>
       </CardContent>
     </Card>
